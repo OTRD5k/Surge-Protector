@@ -1,0 +1,53 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="ScrollingFrame" referent="RBX1A2ADCBC56B1470F90737670166F1982">
+		<Properties>
+			<bool name="Active">false</bool>
+			<Color3 name="BackgroundColor3">4294967295</Color3>
+			<float name="BackgroundTransparency">0</float>
+			<Color3 name="BorderColor3">4279970357</Color3>
+			<int name="BorderSizePixel">1</int>
+			<Content name="BottomImage"><url>rbxassetid://358921009</url></Content>
+			<Vector2 name="CanvasPosition">
+				<X>0</X>
+				<Y>0</Y>
+			</Vector2>
+			<UDim2 name="CanvasSize">
+				<XS>0</XS>
+				<XO>900</XO>
+				<YS>0</YS>
+				<YO>0</YO>
+			</UDim2>
+			<bool name="ClipsDescendants">true</bool>
+			<bool name="Draggable">false</bool>
+			<Content name="MidImage"><url>rbxassetid://358921009</url></Content>
+			<string name="Name">ScrollingFrame</string>
+			<Ref name="NextSelectionDown">null</Ref>
+			<Ref name="NextSelectionLeft">null</Ref>
+			<Ref name="NextSelectionRight">null</Ref>
+			<Ref name="NextSelectionUp">null</Ref>
+			<UDim2 name="Position">
+				<XS>0</XS>
+				<XO>0</XO>
+				<YS>0</YS>
+				<YO>0</YO>
+			</UDim2>
+			<float name="Rotation">0</float>
+			<int name="ScrollBarThickness">12</int>
+			<bool name="ScrollingEnabled">true</bool>
+			<bool name="Selectable">true</bool>
+			<Ref name="SelectionImageObject">null</Ref>
+			<UDim2 name="Size">
+				<XS>1</XS>
+				<XO>0</XO>
+				<YS>0</YS>
+				<YO>75</YO>
+			</UDim2>
+			<token name="SizeConstraint">0</token>
+			<Content name="TopImage"><url>rbxassetid://358921009</url></Content>
+			<bool name="Visible">true</bool>
+			<int name="ZIndex">2</int>
+		</Properties>
+	</Item>
+</roblox>

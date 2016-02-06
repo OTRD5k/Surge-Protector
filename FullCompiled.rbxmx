@@ -1,0 +1,697 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Folder" referent="RBXB3326F3E99334C0589A74392E8B75363">
+		<Properties>
+			<string name="Name">Surge Protector</string>
+		</Properties>
+		<Item class="ModuleScript" referent="RBX8017DAE454634D5EA21D1184A951B633">
+			<Properties>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">ClassGetter</string>
+				<ProtectedString name="Source"><![CDATA[local ClassGetter = {}
+
+function getclasses(ctable)
+	for i=1, #ctable do
+		if ctable[i]:IsA("ModuleScript") then
+			ClassGetter[ctable[i].Name] = require(ctable[i])
+			ClassGetter[ctable[i].Name]["Classes"] = ClassGetter
+			ClassGetter[ctable[i].Name]["Type"] = ctable[i].Name
+		end
+		getclasses(ctable[i]:GetChildren())
+	end
+end
+
+children = script:GetChildren()
+getclasses(children)
+
+--for key,value in pairs(t) do print(key,value) end
+
+
+
+
+return ClassGetter
+]]></ProtectedString>
+			</Properties>
+			<Item class="ModuleScript" referent="RBXABF1C98683094112A2BE0453682A62BB">
+				<Properties>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">plugin</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+                                           
+   ..'.,:cclcl;;cc:,.  Plugin By           
+  'llllcllcllllllllc:. OTRainbowDash5000   
+  ;l;...:ld0Oollcclll.                     
+ .,;   ;kk0KKkccllllc.                     
+ .;; .::kk0kollllllll:.                    
+     :dkNk0olllllllllc'                    
+   .x00K0xoccllclllll:.      .....         
+    ,000olllcclllc:;.     .':cllllc'       
+     .;:llllclllll,     ':ccllllcllc.....  
+      ..:llcllll:......:ccc:cllllclccllll' 
+      .:lodooxoddk0K0occ.. .clllcclllllll; 
+       oKKKKKKKKK0XKKkkO, .cllllcllcclllc. 
+       'OKKKKKK000K0K0O0: .lllllllllccl;.  
+        ,KK000K0KKKKKO0x.  .;:ccclllccll,  
+        ;KKK00o,dKKK0OOo.    ;lllclcllll;  
+        lKKK00x  lKKK0O0o    ,llllcllcc,   
+       .OKKK00k. .OKKK00O,   .,cccllllc.   
+       lKKKK00O.  xKKK0O0o      ...;cc;.   
+      ,0KKKK00k. '0KKKKO0k.                
+      lO0K0Oc:. .x0000k:;' Plugin By       
+        ...       ....   OTRainbowDash5000 
+                                           
+--]]
+
+local Class = {}
+
+Class.new = function(realplug)
+	local self = setmetatable({}, Class)
+	
+	self.RealPlugin = realplug
+	
+	self.Deactivation = self.RealPlugin.Deactivation
+	
+	setmetatable(self, {
+		__index = function(_, k)
+            if Class[k] ~= nil then
+                return Class[k]
+            elseif rawget(self, k) ~= nil then
+				return self[k]				
+			else
+				local psuedofunc = function(...)
+					local realfunc = self.RealPlugin[k]
+					local arg = {...}
+					arg[1] = self.RealPlugin
+					return realfunc(unpack(arg))
+				end
+                return psuedofunc
+            end
+        end
+	})
+	
+	return self
+end
+
+Class.CreateToolbar = function(self, name)
+	return self.Classes["ToolBar"].new(name)
+end
+
+
+
+return Class]]></ProtectedString>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBX339CD482FBFF49D6B878662D3E5CEDEC">
+				<Properties>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">ToolBar</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+                                           
+   ..'.,:cclcl;;cc:,.  Plugin By           
+  'llllcllcllllllllc:. OTRainbowDash5000   
+  ;l;...:ld0Oollcclll.                     
+ .,;   ;kk0KKkccllllc.                     
+ .;; .::kk0kollllllll:.                    
+     :dkNk0olllllllllc'                    
+   .x00K0xoccllclllll:.      .....         
+    ,000olllcclllc:;.     .':cllllc'       
+     .;:llllclllll,     ':ccllllcllc.....  
+      ..:llcllll:......:ccc:cllllclccllll' 
+      .:lodooxoddk0K0occ.. .clllcclllllll; 
+       oKKKKKKKKK0XKKkkO, .cllllcllcclllc. 
+       'OKKKKKK000K0K0O0: .lllllllllccl;.  
+        ,KK000K0KKKKKO0x.  .;:ccclllccll,  
+        ;KKK00o,dKKK0OOo.    ;lllclcllll;  
+        lKKK00x  lKKK0O0o    ,llllcllcc,   
+       .OKKK00k. .OKKK00O,   .,cccllllc.   
+       lKKKK00O.  xKKK0O0o      ...;cc;.   
+      ,0KKKK00k. '0KKKKO0k.                
+      lO0K0Oc:. .x0000k:;' Plugin By       
+        ...       ....   OTRainbowDash5000 
+                                           
+--]]
+
+local Class = {}
+Class.__index = Class
+
+setmetatable(Class, {
+	__call = function (cls, ...)
+		return cls.new(...)
+	end,
+})
+
+Class.new = function(name)
+	local self = setmetatable({}, Class)
+	self.Buttons = {}
+	self.Toolbar = script:FindFirstChild("Toolbar"):Clone()
+	self.Toolbar.ToolBarName.Text = name
+	self.Scrolling = _G.ToolbarFrame
+	self.Toolbar.Parent = self.Scrolling
+	_G.PseudoToolbars[#_G.PseudoToolbars+1] = self
+	return self
+end
+
+Class.RenderAll = function(self)
+	local toolbars = _G.PseudoToolbars
+	for i=1, #toolbars do
+		toolbars[i]:Render()
+		if i==1 then
+			toolbars[i].Toolbar.Position = UDim2.new(0,0,0,0)
+		else
+			toolbars[i].Toolbar.Position = UDim2.new(
+				0,
+				toolbars[i-1].Toolbar.Position.X.Offset + toolbars[i-1].Toolbar.Size.X.Offset + 10,
+				0,
+				0			
+			)
+		end
+	end
+	local canvassize = toolbars[#toolbars].Toolbar.Position.X.Offset + toolbars[#toolbars].Toolbar.Size.X.Offset
+	self.Scrolling.CanvasSize = UDim2.new(0,canvassize,0,0)
+end
+
+Class.Render = function(self)
+	for i=1, #self.Buttons do
+		local button = self.Buttons[i].Button
+		button.Parent = self.Toolbar
+		button.Position = UDim2.new(0, (i-1)*40, 0, 0)
+	end
+	self.Toolbar.Size = UDim2.new(0, #self.Buttons*40, 0.75, 0)
+end
+
+Class.CreateButton = function(self, text, tooltip, image)
+	local newbutton = self.Classes["Button"](self, text, tooltip, image)
+	self.Buttons[#self.Buttons + 1] = newbutton
+	self:RenderAll()
+	return newbutton
+end
+
+return Class]]></ProtectedString>
+				</Properties>
+				<Item class="Frame" referent="RBX4160D7B1AA5849F890DC99E97A76AF94">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Color3 name="BackgroundColor3">4294967295</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">0</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<string name="Name">Toolbar</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>0</XO>
+							<YS>0</YS>
+							<YO>0</YO>
+						</UDim2>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>25</XO>
+							<YS>0.5</YS>
+							<YO>0</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">2</int>
+					</Properties>
+					<Item class="TextLabel" referent="RBX7589A98D3AEB4C7088BCE1DE58E4763B">
+						<Properties>
+							<bool name="Active">false</bool>
+							<Color3 name="BackgroundColor3">4294967295</Color3>
+							<float name="BackgroundTransparency">1</float>
+							<Color3 name="BorderColor3">4279970357</Color3>
+							<int name="BorderSizePixel">0</int>
+							<bool name="ClipsDescendants">false</bool>
+							<bool name="Draggable">false</bool>
+							<token name="Font">3</token>
+							<token name="FontSize">6</token>
+							<string name="Name">ToolBarName</string>
+							<Ref name="NextSelectionDown">null</Ref>
+							<Ref name="NextSelectionLeft">null</Ref>
+							<Ref name="NextSelectionRight">null</Ref>
+							<Ref name="NextSelectionUp">null</Ref>
+							<UDim2 name="Position">
+								<XS>0</XS>
+								<XO>0</XO>
+								<YS>0.75</YS>
+								<YO>0</YO>
+							</UDim2>
+							<float name="Rotation">0</float>
+							<bool name="Selectable">false</bool>
+							<Ref name="SelectionImageObject">null</Ref>
+							<UDim2 name="Size">
+								<XS>1</XS>
+								<XO>0</XO>
+								<YS>0.25</YS>
+								<YO>0</YO>
+							</UDim2>
+							<token name="SizeConstraint">0</token>
+							<string name="Text">Lorem Impsum</string>
+							<Color3 name="TextColor3">4279970357</Color3>
+							<bool name="TextScaled">true</bool>
+							<Color3 name="TextStrokeColor3">4278190080</Color3>
+							<float name="TextStrokeTransparency">1</float>
+							<float name="TextTransparency">0</float>
+							<bool name="TextWrapped">true</bool>
+							<token name="TextXAlignment">2</token>
+							<token name="TextYAlignment">1</token>
+							<bool name="Visible">true</bool>
+							<int name="ZIndex">2</int>
+						</Properties>
+					</Item>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXA9D52D3C1EB540C1A7D747AC066F2528">
+				<Properties>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Button</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+                                           
+   ..'.,:cclcl;;cc:,.  Plugin By           
+  'llllcllcllllllllc:. OTRainbowDash5000   
+  ;l;...:ld0Oollcclll.                     
+ .,;   ;kk0KKkccllllc.                     
+ .;; .::kk0kollllllll:.                    
+     :dkNk0olllllllllc'                    
+   .x00K0xoccllclllll:.      .....         
+    ,000olllcclllc:;.     .':cllllc'       
+     .;:llllclllll,     ':ccllllcllc.....  
+      ..:llcllll:......:ccc:cllllclccllll' 
+      .:lodooxoddk0K0occ.. .clllcclllllll; 
+       oKKKKKKKKK0XKKkkO, .cllllcllcclllc. 
+       'OKKKKKK000K0K0O0: .lllllllllccl;.  
+        ,KK000K0KKKKKO0x.  .;:ccclllccll,  
+        ;KKK00o,dKKK0OOo.    ;lllclcllll;  
+        lKKK00x  lKKK0O0o    ,llllcllcc,   
+       .OKKK00k. .OKKK00O,   .,cccllllc.   
+       lKKKK00O.  xKKK0O0o      ...;cc;.   
+      ,0KKKK00k. '0KKKKO0k.                
+      lO0K0Oc:. .x0000k:;' Plugin By       
+        ...       ....   OTRainbowDash5000 
+                                           
+--]]
+
+local Class = {}
+Class.__index = Class
+
+setmetatable(Class, {
+	__call = function (cls, ...)
+		return cls.new(...)
+	end,
+})
+
+Class.new = function(toolbar, text, tooltip, image)
+	local self = setmetatable({}, Class)
+
+	if image ~= nil and image ~= "" then
+		self.Button = script:FindFirstChild("ImageButton"):Clone()
+		self.Button.Image = image
+	else
+		self.Button = script:FindFirstChild("TextButton"):Clone()
+		self.Button.Text = text
+	end
+	
+	self.Button.Parent = toolbar.Toolbar
+	
+	self.Click = self.Button.MouseButton1Click
+	return self
+end
+
+Class.SetActive = function(self, active)
+	return
+end
+
+return Class]]></ProtectedString>
+				</Properties>
+				<Item class="ImageButton" referent="RBXFD4B0280D27B4CDDB3DB9F8CAD0A10A3">
+					<Properties>
+						<bool name="Active">true</bool>
+						<bool name="AutoButtonColor">true</bool>
+						<Color3 name="BackgroundColor3">4294967295</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">0</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<Content name="Image"><url>rbxassetid://133293265</url></Content>
+						<Color3 name="ImageColor3">4294967295</Color3>
+						<Vector2 name="ImageRectOffset">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<Vector2 name="ImageRectSize">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<float name="ImageTransparency">0</float>
+						<bool name="Modal">false</bool>
+						<string name="Name">ImageButton</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>0</XO>
+							<YS>0</YS>
+							<YO>0</YO>
+						</UDim2>
+						<float name="Rotation">0</float>
+						<token name="ScaleType">0</token>
+						<bool name="Selectable">true</bool>
+						<bool name="Selected">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>40</XO>
+							<YS>0.660000026</YS>
+							<YO>0</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<Rect2D name="SliceCenter">
+							<min>
+								<X>0</X>
+								<Y>0</Y>
+							</min>
+							<max>
+								<X>0</X>
+								<Y>0</Y>
+							</max>
+						</Rect2D>
+						<token name="Style">0</token>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">2</int>
+					</Properties>
+				</Item>
+				<Item class="TextButton" referent="RBXAD155D25BC3E4ECDB4FF0C28C94552EF">
+					<Properties>
+						<bool name="Active">true</bool>
+						<bool name="AutoButtonColor">true</bool>
+						<Color3 name="BackgroundColor3">4294967295</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">0</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<token name="Font">3</token>
+						<token name="FontSize">2</token>
+						<bool name="Modal">false</bool>
+						<string name="Name">TextButton</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>0</XO>
+							<YS>0</YS>
+							<YO>0</YO>
+						</UDim2>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">true</bool>
+						<bool name="Selected">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>40</XO>
+							<YS>0.660000026</YS>
+							<YO>0</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<string name="Text"></string>
+						<Color3 name="TextColor3">4279970357</Color3>
+						<bool name="TextScaled">true</bool>
+						<Color3 name="TextStrokeColor3">4278190080</Color3>
+						<float name="TextStrokeTransparency">1</float>
+						<float name="TextTransparency">0</float>
+						<bool name="TextWrapped">true</bool>
+						<token name="TextXAlignment">2</token>
+						<token name="TextYAlignment">1</token>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">2</int>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="Script" referent="RBX3FB02735331E422686D817B662F34272">
+			<Properties>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Script</string>
+				<ProtectedString name="Source"><![CDATA[--[[
+                                           
+   ..'.,:cclcl;;cc:,.  Plugin By           
+  'llllcllcllllllllc:. OTRainbowDash5000   
+  ;l;...:ld0Oollcclll.                     
+ .,;   ;kk0KKkccllllc.                     
+ .;; .::kk0kollllllll:.                    
+     :dkNk0olllllllllc'                    
+   .x00K0xoccllclllll:.      .....         
+    ,000olllcclllc:;.     .':cllllc'       
+     .;:llllclllll,     ':ccllllcllc.....  
+      ..:llcllll:......:ccc:cllllclccllll' 
+      .:lodooxoddk0K0occ.. .clllcclllllll; 
+       oKKKKKKKKK0XKKkkO, .cllllcllcclllc. 
+       'OKKKKKK000K0K0O0: .lllllllllccl;.  
+        ,KK000K0KKKKKO0x.  .;:ccclllccll,  
+        ;KKK00o,dKKK0OOo.    ;lllclcllll;  
+        lKKK00x  lKKK0O0o    ,llllcllcc,   
+       .OKKK00k. .OKKK00O,   .,cccllllc.   
+       lKKKK00O.  xKKK0O0o      ...;cc;.   
+      ,0KKKK00k. '0KKKKO0k.                
+      lO0K0Oc:. .x0000k:;' Plugin By       
+        ...       ....   OTRainbowDash5000        
+                        
+--]]
+
+
+
+_G.PseudoToolbars = {}
+
+_G.ToolbarFrame = script:FindFirstChild("ScrollingFrame")
+_G.ToolbarFrame.Parent = Instance.new("ScreenGui")
+_G.ToolbarFrame.Parent.Parent = game.CoreGui
+
+local scrollingframe = _G.ToolbarFrame
+local movebutton = script:FindFirstChild("MoveButton")
+movebutton.Parent = scrollingframe.Parent
+
+local expanded = true
+
+movebutton.MouseButton1Click:connect(function()
+	if expanded == true then
+		expanded = false
+		movebutton.Position = UDim2.new(1,-20,0,0)
+		movebutton.Image = "rbxassetid://359100099"
+		scrollingframe:TweenPosition(UDim2.new(0,0,0,-75), "Out", "Quad", 1, true)
+	else
+		expanded = true
+		movebutton.Position = UDim2.new(1,-20,0,75)
+		movebutton.Image = "rbxassetid://359100130"
+		scrollingframe:TweenPosition(UDim2.new(0,0,0,0), "Out", "Quad", 1, true)
+	end
+end)
+
+
+_G.PseudoPluginClasses = require(script.Parent.ClassGetter)
+
+
+while _G.PseudoPluginClasses == nil do
+	wait()
+end
+
+local enviro = getfenv()
+
+do
+	local plugin = enviro["PluginManager"]():CreatePlugin()
+	local fakeplugin = _G.PseudoPluginClasses["plugin"].new(plugin)
+	enviro["plugin"] = fakeplugin
+	
+	enviro["PluginManager"] = setmetatable({}, {
+		__call = function(t, ...)
+			local returnt = {}
+			returnt["CreatePlugin"] = function()
+				return fakeplugin
+			end
+			return returnt
+		end
+	})
+	
+end
+
+local toolbar = plugin:CreateToolbar("Surge Protector")
+
+local environmentchanger = [[
+while _G.PseudoPluginClasses == nil do
+	wait()
+end
+
+local enviro = getfenv()
+
+do
+	local plugin = enviro["PluginManager"]():CreatePlugin()
+	local fakeplugin = _G.PseudoPluginClasses["plugin"].new(plugin)
+	enviro["plugin"] = fakeplugin
+	
+	enviro["PluginManager"] = setmetatable({}, {
+		__call = function(t, ...)
+			local returnt = {}
+			returnt["CreatePlugin"] = function()
+				return fakeplugin
+			end
+			return returnt
+		end
+	})
+	
+end
+
+]]
+
+local button = toolbar:CreateButton(
+	"Surge Protect",
+	"Converts a Plugin To a Surge Protected Plugin",
+	"http://www.roblox.com/asset/?id=359061374"
+)
+
+function recursesurge(inst)
+	if inst.ClassName == "Script" then
+		if string.find(inst.Source, "while _G.PseudoPluginClasses == nil do") == nil then
+			inst.Source = environmentchanger .. inst.Source
+		end
+	end
+	local children = inst:GetChildren()
+	for i=1, #children do
+		recursesurge(children[i])
+	end
+end
+
+button.Click:connect(function()
+	local selection = game.Selection:Get()
+	for k=1, #selection do
+		recursesurge(selection[k])
+	end
+	print("Selected plugins converted to surge protector plugins")
+end)]]></ProtectedString>
+			</Properties>
+			<Item class="ScrollingFrame" referent="RBX1A2ADCBC56B1470F90737670166F1982">
+				<Properties>
+					<bool name="Active">false</bool>
+					<Color3 name="BackgroundColor3">4294967295</Color3>
+					<float name="BackgroundTransparency">0</float>
+					<Color3 name="BorderColor3">4279970357</Color3>
+					<int name="BorderSizePixel">1</int>
+					<Content name="BottomImage"><url>rbxassetid://358921009</url></Content>
+					<Vector2 name="CanvasPosition">
+						<X>0</X>
+						<Y>0</Y>
+					</Vector2>
+					<UDim2 name="CanvasSize">
+						<XS>0</XS>
+						<XO>900</XO>
+						<YS>0</YS>
+						<YO>0</YO>
+					</UDim2>
+					<bool name="ClipsDescendants">true</bool>
+					<bool name="Draggable">false</bool>
+					<Content name="MidImage"><url>rbxassetid://358921009</url></Content>
+					<string name="Name">ScrollingFrame</string>
+					<Ref name="NextSelectionDown">null</Ref>
+					<Ref name="NextSelectionLeft">null</Ref>
+					<Ref name="NextSelectionRight">null</Ref>
+					<Ref name="NextSelectionUp">null</Ref>
+					<UDim2 name="Position">
+						<XS>0</XS>
+						<XO>0</XO>
+						<YS>0</YS>
+						<YO>0</YO>
+					</UDim2>
+					<float name="Rotation">0</float>
+					<int name="ScrollBarThickness">12</int>
+					<bool name="ScrollingEnabled">true</bool>
+					<bool name="Selectable">true</bool>
+					<Ref name="SelectionImageObject">null</Ref>
+					<UDim2 name="Size">
+						<XS>1</XS>
+						<XO>0</XO>
+						<YS>0</YS>
+						<YO>75</YO>
+					</UDim2>
+					<token name="SizeConstraint">0</token>
+					<Content name="TopImage"><url>rbxassetid://358921009</url></Content>
+					<bool name="Visible">true</bool>
+					<int name="ZIndex">2</int>
+				</Properties>
+			</Item>
+			<Item class="ImageButton" referent="RBXD24A30B586BC44928ABDDC8B97A2195D">
+				<Properties>
+					<bool name="Active">true</bool>
+					<bool name="AutoButtonColor">true</bool>
+					<Color3 name="BackgroundColor3">4294967295</Color3>
+					<float name="BackgroundTransparency">0</float>
+					<Color3 name="BorderColor3">4279970357</Color3>
+					<int name="BorderSizePixel">1</int>
+					<bool name="ClipsDescendants">false</bool>
+					<bool name="Draggable">false</bool>
+					<Content name="Image"><url>rbxassetid://359100130</url></Content>
+					<Color3 name="ImageColor3">4294967295</Color3>
+					<Vector2 name="ImageRectOffset">
+						<X>0</X>
+						<Y>0</Y>
+					</Vector2>
+					<Vector2 name="ImageRectSize">
+						<X>0</X>
+						<Y>0</Y>
+					</Vector2>
+					<float name="ImageTransparency">0</float>
+					<bool name="Modal">false</bool>
+					<string name="Name">MoveButton</string>
+					<Ref name="NextSelectionDown">null</Ref>
+					<Ref name="NextSelectionLeft">null</Ref>
+					<Ref name="NextSelectionRight">null</Ref>
+					<Ref name="NextSelectionUp">null</Ref>
+					<UDim2 name="Position">
+						<XS>1</XS>
+						<XO>-20</XO>
+						<YS>0</YS>
+						<YO>75</YO>
+					</UDim2>
+					<float name="Rotation">0</float>
+					<token name="ScaleType">0</token>
+					<bool name="Selectable">true</bool>
+					<bool name="Selected">false</bool>
+					<Ref name="SelectionImageObject">null</Ref>
+					<UDim2 name="Size">
+						<XS>0</XS>
+						<XO>20</XO>
+						<YS>0</YS>
+						<YO>20</YO>
+					</UDim2>
+					<token name="SizeConstraint">0</token>
+					<Rect2D name="SliceCenter">
+						<min>
+							<X>0</X>
+							<Y>0</Y>
+						</min>
+						<max>
+							<X>0</X>
+							<Y>0</Y>
+						</max>
+					</Rect2D>
+					<token name="Style">0</token>
+					<bool name="Visible">true</bool>
+					<int name="ZIndex">1</int>
+				</Properties>
+			</Item>
+		</Item>
+	</Item>
+</roblox>
